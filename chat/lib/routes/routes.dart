@@ -1,3 +1,4 @@
+import 'package:chat/screens/chat.dart';
 import 'package:chat/screens/chatUsers.dart';
 import 'package:chat/screens/login.dart';
 
@@ -6,7 +7,7 @@ class Routes {
     return {
       LoginScreen.ROUTE_ID: (context) => LoginScreen(),
       ChatUsersScreen.ROUTE_ID: (context) => ChatUsersScreen(),
-      // ChatScreen.ROUTE_ID: (context) => ChatScreen(),
+      ChatScreen.ROUTE_ID: (context) => ChatScreen(),
     };
   }
 

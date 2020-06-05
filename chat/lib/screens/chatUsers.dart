@@ -3,6 +3,8 @@ import 'package:chat/screens/login.dart';
 import 'package:chat/shared/global.dart';
 import 'package:flutter/material.dart';
 
+import 'chat.dart';
+
 class ChatUsersScreen extends StatefulWidget {
   //
   ChatUsersScreen() : super();
@@ -80,10 +82,10 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
                 itemBuilder: (_, index) {
                   User user = _chatUsers[index];
                   return GestureDetector(
-                    // onTap: () {
-                    //   G.toChatUser = user;
-                    //   openChatScreen(context);
-                    // },
+                    onTap: () {
+                      G.toChatUser = user;
+                      openChatScreen(context);
+                    },
                     child: ListTile(
                       title: Text(user.name),
                       subtitle: Text('ID: ${user.id}, ${user.email}'),
@@ -98,12 +100,12 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
     );
   }
 
-  // static openChatScreen(BuildContext context) async {
-  //   await Navigator.pushNamed(
-  //     context,
-  //     ChatScreen.ROUTE_ID,
-  //   );
-  // }
+  static openChatScreen(BuildContext context) async {
+    await Navigator.pushNamed(
+      context,
+      ChatScreen.ROUTE_ID,
+    );
+  }
 
   // onConnect(data) {
   //   print('Connected $data');
