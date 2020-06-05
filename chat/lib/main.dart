@@ -1,3 +1,4 @@
+import 'package:chat/routes/routes.dart';
 import 'package:chat/screens/login.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,8 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: LoginScreen(),
+      routes: Routes.routes(),
+      initialRoute: Routes.initScreen(),
     );
   }
 }

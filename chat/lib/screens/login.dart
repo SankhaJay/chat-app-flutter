@@ -1,4 +1,8 @@
+import 'package:chat/models/user.dart';
+import 'package:chat/shared/global.dart';
 import 'package:flutter/material.dart';
+
+import 'chatUsers.dart';
 
 class LoginScreen extends StatefulWidget {
   //
@@ -18,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     _usernameController = TextEditingController();
-    // G.initDummyUsers();
+    G.initDummyUsers();
   }
 
   @override
@@ -62,24 +66,32 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _loginBtnTap() async {
+    print(_usernameController.text);
     if (_usernameController.text.isEmpty) {
       return;
     }
 
-    // User me = G.dummyUsers[0];
-    // if (_usernameController.text != 'a') {
+    User me;
+    // if (_usernameController.text != 'Dulaj') {
     //   me = G.dummyUsers[1];
     // }
 
-    // G.loggedInUser = me;
+   G.dummyUsers.forEach((user) {
+     if(_usernameController.text==user.id){
+       me = user;
+       return;
+     }
+   });
 
-    // openHomeScreen(context);
+    G.loggedInUser = me;
+
+    openHomeScreen(context);
   }
 
-  // static openHomeScreen(BuildContext context) async {
-  //   await Navigator.pushReplacementNamed(
-  //     context,
-  //     ChatUsersScreen.ROUTE_ID,
-  //   );
-  // }
+  static openHomeScreen(BuildContext context) async {
+    await Navigator.pushReplacementNamed(
+      context,
+      ChatUsersScreen.ROUTE_ID,
+    );
+  }
 }
