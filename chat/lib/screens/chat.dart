@@ -3,6 +3,7 @@ import 'package:chat/models/message.dart';
 import 'package:chat/models/user.dart';
 import 'package:chat/services/socketUtils.dart';
 import 'package:chat/shared/global.dart';
+import 'package:chat/widgets/chatBubble.dart';
 import 'package:flutter/material.dart';
 
 import 'chatTitle.dart';
@@ -36,23 +37,23 @@ class ChatScreenState extends State<ChatScreen> {
     _chatTfController = TextEditingController();
     _chatUser = G.toChatUser;
     _chatMessages = List();
-    // _initSocketListeners();
-    // _checkOnline();
+    _initSocketListeners();
+    _checkOnline();
   }
 
-  // _initSocketListeners() async {
-  //   G.socketUtils.setOnUserConnectionStatusListener(onUserConnectionStatus);
-  //   G.socketUtils.setOnChatMessageReceivedListener(onChatMessageReceived);
-  //   G.socketUtils.setOnMessageBackFromServer(onMessageBackFromServer);
-  // }
+  _initSocketListeners() async {
+    G.socketUtils.setOnUserConnectionStatusListener(onUserConnectionStatus);
+    G.socketUtils.setOnChatMessageReceivedListener(onChatMessageReceived);
+    G.socketUtils.setOnMessageBackFromServer(onMessageBackFromServer);
+  }
 
-  // _checkOnline() async {
-  //   ChatMessageModel chatMessageModel = ChatMessageModel(
-  //     to: G.toChatUser.id,
-  //     from: G.loggedInUser.id,
-  //   );
-  //   G.socketUtils.checkOnline(chatMessageModel);
-  // }
+  _checkOnline() async {
+    ChatMessageModel chatMessageModel = ChatMessageModel(
+      to: G.toChatUser.id,
+      from: G.loggedInUser.id,
+    );
+    G.socketUtils.checkOnline(chatMessageModel);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +73,7 @@ class ChatScreenState extends State<ChatScreen> {
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              // _chatList(),
+              _chatList(),
               _bottomChatArea(),
             ],
           ),
@@ -81,26 +82,26 @@ class ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  // _chatList() {
-  //   return Expanded(
-  //     child: Container(
-  //       child: ListView.builder(
-  //         cacheExtent: 100,
-  //         controller: _chatLVController,
-  //         reverse: false,
-  //         shrinkWrap: true,
-  //         padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-  //         itemCount: null == _chatMessages ? 0 : _chatMessages.length,
-  //         itemBuilder: (context, index) {
-  //           ChatMessageModel chatMessage = _chatMessages[index];
-  //           return _chatBubble(
-  //             chatMessage,
-  //           );
-  //         },
-  //       ),
-  //     ),
-  //   );
-  // }
+  _chatList() {
+    return Expanded(
+      child: Container(
+        child: ListView.builder(
+          cacheExtent: 100,
+          controller: _chatLVController,
+          reverse: false,
+          shrinkWrap: true,
+          padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+          itemCount: null == _chatMessages ? 0 : _chatMessages.length,
+          itemBuilder: (context, index) {
+            ChatMessageModel chatMessage = _chatMessages[index];
+            return _chatBubble(
+              chatMessage,
+            );
+          },
+        ),
+      ),
+    );
+  }
 
   _bottomChatArea() {
     return Container(
@@ -179,88 +180,88 @@ class ChatScreenState extends State<ChatScreen> {
     return fromUser.id == G.loggedInUser.id;
   }
 
-  // _chatBubble(ChatMessageModel chatMessageModel) {
-  //   bool fromMe = chatMessageModel.from == G.loggedInUser.id;
-  //   Alignment alignment = fromMe ? Alignment.topRight : Alignment.topLeft;
-  //   Alignment chatArrowAlignment =
-  //       fromMe ? Alignment.topRight : Alignment.topLeft;
-  //   TextStyle textStyle = TextStyle(
-  //     fontSize: 16.0,
-  //     color: fromMe ? Colors.white : Colors.black54,
-  //   );
-  //   Color chatBgColor = fromMe ? Colors.blue : Colors.black12;
-  //   EdgeInsets edgeInsets = fromMe
-  //       ? EdgeInsets.fromLTRB(5, 5, 15, 5)
-  //       : EdgeInsets.fromLTRB(15, 5, 5, 5);
-  //   EdgeInsets margins = fromMe
-  //       ? EdgeInsets.fromLTRB(80, 5, 10, 5)
-  //       : EdgeInsets.fromLTRB(10, 5, 80, 5);
+  _chatBubble(ChatMessageModel chatMessageModel) {
+    bool fromMe = chatMessageModel.from == G.loggedInUser.id;
+    Alignment alignment = fromMe ? Alignment.topRight : Alignment.topLeft;
+    Alignment chatArrowAlignment =
+        fromMe ? Alignment.topRight : Alignment.topLeft;
+    TextStyle textStyle = TextStyle(
+      fontSize: 16.0,
+      color: fromMe ? Colors.white : Colors.black54,
+    );
+    Color chatBgColor = fromMe ? Colors.blue : Colors.black12;
+    EdgeInsets edgeInsets = fromMe
+        ? EdgeInsets.fromLTRB(5, 5, 15, 5)
+        : EdgeInsets.fromLTRB(15, 5, 5, 5);
+    EdgeInsets margins = fromMe
+        ? EdgeInsets.fromLTRB(80, 5, 10, 5)
+        : EdgeInsets.fromLTRB(10, 5, 80, 5);
 
-  //   return Container(
-  //     color: Colors.white,
-  //     margin: margins,
-  //     child: Align(
-  //       alignment: alignment,
-  //       child: Column(
-  //         children: <Widget>[
-  //           CustomPaint(
-  //             painter: ChatBubble(
-  //               color: chatBgColor,
-  //               alignment: chatArrowAlignment,
-  //             ),
-  //             child: Container(
-  //               margin: EdgeInsets.all(10),
-  //               child: Stack(
-  //                 children: <Widget>[
-  //                   Padding(
-  //                     padding: edgeInsets,
-  //                     child: Text(
-  //                       chatMessageModel.message,
-  //                       style: textStyle,
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
+    return Container(
+      color: Colors.white,
+      margin: margins,
+      child: Align(
+        alignment: alignment,
+        child: Column(
+          children: <Widget>[
+            CustomPaint(
+              painter: ChatBubble(
+                color: chatBgColor,
+                alignment: chatArrowAlignment,
+              ),
+              child: Container(
+                margin: EdgeInsets.all(10),
+                child: Stack(
+                  children: <Widget>[
+                    Padding(
+                      padding: edgeInsets,
+                      child: Text(
+                        chatMessageModel.message,
+                        style: textStyle,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
-  // onChatMessageReceived(data) {
-  //   print('onChatMessageReceived $data');
-  //   if (null == data || data.toString().isEmpty) {
-  //     return;
-  //   }
-  //   ChatMessageModel chatMessageModel = ChatMessageModel.fromJson(data);
-  //   bool online = chatMessageModel.toUserOnlineStatus;
-  //   _updateToUserOnlineStatusInUI(online);
-  //   processMessage(chatMessageModel);
-  // }
+  onChatMessageReceived(data) {
+    print('onChatMessageReceived $data');
+    if (null == data || data.toString().isEmpty) {
+      return;
+    }
+    ChatMessageModel chatMessageModel = ChatMessageModel.fromJson(data);
+    bool online = chatMessageModel.toUserOnlineStatus;
+    _updateToUserOnlineStatusInUI(online);
+    processMessage(chatMessageModel);
+  }
 
-  // onMessageBackFromServer(data) {
-  //   ChatMessageModel chatMessageModel = ChatMessageModel.fromJson(data);
-  //   bool online = chatMessageModel.toUserOnlineStatus;
-  //   print('onMessageBackFromServer $data');
-  //   if (!online) {
-  //     print('User not connected');
-  //   }
-  // }
+  onMessageBackFromServer(data) {
+    ChatMessageModel chatMessageModel = ChatMessageModel.fromJson(data);
+    bool online = chatMessageModel.toUserOnlineStatus;
+    print('onMessageBackFromServer $data');
+    if (!online) {
+      print('User not connected');
+    }
+  }
 
-  // onUserConnectionStatus(data) {
-  //   ChatMessageModel chatMessageModel = ChatMessageModel.fromJson(data);
-  //   bool online = chatMessageModel.toUserOnlineStatus;
-  //   _updateToUserOnlineStatusInUI(online);
-  // }
+  onUserConnectionStatus(data) {
+    ChatMessageModel chatMessageModel = ChatMessageModel.fromJson(data);
+    bool online = chatMessageModel.toUserOnlineStatus;
+    _updateToUserOnlineStatusInUI(online);
+  }
 
-  // _updateToUserOnlineStatusInUI(online) {
-  //   setState(() {
-  //     _userOnlineStatus =
-  //         online ? UserOnlineStatus.online : UserOnlineStatus.not_online;
-  //   });
-  // }
+  _updateToUserOnlineStatusInUI(online) {
+    setState(() {
+      _userOnlineStatus =
+          online ? UserOnlineStatus.online : UserOnlineStatus.not_online;
+    });
+  }
 
   processMessage(ChatMessageModel chatMessageModel) {
     _addMessage(0, chatMessageModel, false);
