@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:chat/models/message.dart';
 import 'package:chat/models/user.dart';
+import 'package:chat/services/socketUtils.dart';
 import 'package:chat/shared/global.dart';
 import 'package:flutter/material.dart';
 
@@ -154,29 +155,29 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   _sendButtonTap() async {
-    // if (_chatTfController.text.isEmpty) {
-    //   return;
-    // }
-    // ChatMessageModel chatMessageModel = ChatMessageModel(
-    //   chatId: 0,
-    //   to: _chatUser.id,
-    //   from: G.loggedInUser.id,
-    //   toUserOnlineStatus: false,
-    //   message: _chatTfController.text,
-    //   chatType: SocketUtils.SINGLE_CHAT,
-    // );
-    // _addMessage(0, chatMessageModel, _isFromMe(G.loggedInUser));
-    // _clearMessage();
-    // G.socketUtils.sendSingleChatMessage(chatMessageModel, _chatUser);
+    if (_chatTfController.text.isEmpty) {
+      return;
+    }
+    ChatMessageModel chatMessageModel = ChatMessageModel(
+      chatId: 0,
+      to: _chatUser.id,
+      from: G.loggedInUser.id,
+      toUserOnlineStatus: false,
+      message: _chatTfController.text,
+      chatType: SocketUtils.SINGLE_CHAT,
+    );
+    _addMessage(0, chatMessageModel, _isFromMe(G.loggedInUser));
+    _clearMessage();
+    G.socketUtils.sendSingleChatMessage(chatMessageModel, _chatUser);
   }
 
-  // _clearMessage() {
-  //   _chatTfController.text = '';
-  // }
+  _clearMessage() {
+    _chatTfController.text = '';
+  }
 
-  // _isFromMe(User fromUser) {
-  //   return fromUser.id == G.loggedInUser.id;
-  // }
+  _isFromMe(User fromUser) {
+    return fromUser.id == G.loggedInUser.id;
+  }
 
   // _chatBubble(ChatMessageModel chatMessageModel) {
   //   bool fromMe = chatMessageModel.from == G.loggedInUser.id;
@@ -261,31 +262,31 @@ class ChatScreenState extends State<ChatScreen> {
   //   });
   // }
 
-  // processMessage(ChatMessageModel chatMessageModel) {
-  //   _addMessage(0, chatMessageModel, false);
-  // }
+  processMessage(ChatMessageModel chatMessageModel) {
+    _addMessage(0, chatMessageModel, false);
+  }
 
-  // _addMessage(id, ChatMessageModel chatMessageModel, fromMe) async {
-  //   print('Adding Message to UI ${chatMessageModel.message}');
-  //   setState(() {
-  //     _chatMessages.add(chatMessageModel);
-  //   });
-  //   print('Total Messages: ${_chatMessages.length}');
-  //   _chatListScrollToBottom();
-  // }
+  _addMessage(id, ChatMessageModel chatMessageModel, fromMe) async {
+    print('Adding Message to UI ${chatMessageModel.message}');
+    setState(() {
+      _chatMessages.add(chatMessageModel);
+    });
+    print('Total Messages: ${_chatMessages.length}');
+    _chatListScrollToBottom();
+  }
 
-  // /// Scroll the Chat List when it goes to bottom
-  // _chatListScrollToBottom() {
-  //   Timer(Duration(milliseconds: 100), () {
-  //     if (_chatLVController.hasClients) {
-  //       _chatLVController.animateTo(
-  //         _chatLVController.position.maxScrollExtent,
-  //         duration: Duration(milliseconds: 100),
-  //         curve: Curves.decelerate,
-  //       );
-  //     }
-  //   });
-  // }
+  /// Scroll the Chat List when it goes to bottom
+  _chatListScrollToBottom() {
+    Timer(Duration(milliseconds: 100), () {
+      if (_chatLVController.hasClients) {
+        _chatLVController.animateTo(
+          _chatLVController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 100),
+          curve: Curves.decelerate,
+        );
+      }
+    });
+  }
 }
 
 enum UserOnlineStatus { connecting, online, not_online }

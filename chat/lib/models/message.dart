@@ -8,8 +8,8 @@ String chatMessageModelToJson(ChatMessageModel data) =>
 
 class ChatMessageModel {
   int chatId;
-  int to;
-  int from;
+  String to;
+  String from;
   String message;
   String chatType;
   bool toUserOnlineStatus;
