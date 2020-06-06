@@ -25,24 +25,24 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
   void initState() {
     super.initState();
     _chatUsers = G.getUsersFor(G.loggedInUser);
-    // _connectedToSocket = false;
-    // _errorConnectMessage = 'Connecting...';
-    // _connectSocket();
+    _connectedToSocket = false;
+    _errorConnectMessage = 'Connecting...';
+    _connectSocket();
   }
 
-  // _connectSocket() {
-  //   Future.delayed(Duration(seconds: 2), () async {
-  //     print(
-  //         // "Connecting Logged In User: ${G.loggedInUser.name}, ID: ${G.loggedInUser.id}");
-  //     // G.initSocket();
-  //     // await G.socketUtils.initSocket(G.loggedInUser);
-  //     G.socketUtils.connectToSocket();
-  //     G.socketUtils.setConnectListener(onConnect);
-  //     G.socketUtils.setOnDisconnectListener(onDisconnect);
-  //     G.socketUtils.setOnErrorListener(onError);
-  //     G.socketUtils.setOnConnectionErrorListener(onConnectError);
-  //   });
-  // }
+  _connectSocket() {
+    Future.delayed(Duration(seconds: 2), () async {
+      print(
+          "Connecting Logged In User: ${G.loggedInUser.name}, ID: ${G.loggedInUser.id}");
+      G.initSocket();
+      await G.socketUtils.initSocket(G.loggedInUser);
+      G.socketUtils.connectToSocket();
+      G.socketUtils.setConnectListener(onConnect);
+      G.socketUtils.setOnDisconnectListener(onDisconnect);
+      G.socketUtils.setOnErrorListener(onError);
+      G.socketUtils.setOnConnectionErrorListener(onConnectError);
+    });
+  }
 
   static openLoginScreen(BuildContext context) async {
     await Navigator.pushReplacementNamed(
@@ -60,7 +60,7 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
           IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
-                // G.socketUtils.closeConnection();
+                G.socketUtils.closeConnection();
                 openLoginScreen(context);
               })
         ],
@@ -72,7 +72,7 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            // Text(_connectedToSocket ? 'Connected' : _errorConnectMessage),
+            Text(_connectedToSocket ? 'Connected' : _errorConnectMessage),
             SizedBox(
               height: 20.0,
             ),
@@ -107,42 +107,42 @@ class _ChatUsersScreenState extends State<ChatUsersScreen> {
     );
   }
 
-  // onConnect(data) {
-  //   print('Connected $data');
-  //   setState(() {
-  //     _connectedToSocket = true;
-  //   });
-  // }
+  onConnect(data) {
+    print('Connected $data');
+    setState(() {
+      _connectedToSocket = true;
+    });
+  }
 
-  // onConnectError(data) {
-  //   print('onConnectError $data');
-  //   setState(() {
-  //     _connectedToSocket = false;
-  //     _errorConnectMessage = 'Failed to Connect';
-  //   });
-  // }
+  onConnectError(data) {
+    print('onConnectError $data');
+    setState(() {
+      _connectedToSocket = false;
+      _errorConnectMessage = 'Failed to Connect';
+    });
+  }
 
-  // onConnectTimeout(data) {
-  //   print('onConnectTimeout $data');
-  //   setState(() {
-  //     _connectedToSocket = false;
-  //     _errorConnectMessage = 'Connection timedout';
-  //   });
-  // }
+  onConnectTimeout(data) {
+    print('onConnectTimeout $data');
+    setState(() {
+      _connectedToSocket = false;
+      _errorConnectMessage = 'Connection timedout';
+    });
+  }
 
-  // onError(data) {
-  //   print('onError $data');
-  //   setState(() {
-  //     _connectedToSocket = false;
-  //     _errorConnectMessage = 'Connection Failed';
-  //   });
-  // }
+  onError(data) {
+    print('onError $data');
+    setState(() {
+      _connectedToSocket = false;
+      _errorConnectMessage = 'Connection Failed';
+    });
+  }
 
-  // onDisconnect(data) {
-  //   print('onDisconnect $data');
-  //   setState(() {
-  //     _connectedToSocket = false;
-  //     _errorConnectMessage = 'Disconnected';
-  //   });
-  // }
+  onDisconnect(data) {
+    print('onDisconnect $data');
+    setState(() {
+      _connectedToSocket = false;
+      _errorConnectMessage = 'Disconnected';
+    });
+  }
 }

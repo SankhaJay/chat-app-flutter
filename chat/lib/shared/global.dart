@@ -1,10 +1,11 @@
 
 
 import 'package:chat/models/user.dart';
+import 'package:chat/services/socketUtils.dart';
 
 class G {
   // Socket
-  // static SocketUtils socketUtils;
+  static SocketUtils socketUtils;
   static List<User> dummyUsers; 
 
   // Logged In User
@@ -13,11 +14,11 @@ class G {
   // Single Chat - To Chat User
   static User toChatUser;
 
-  // static initSocket() {
-  //   if (null == socketUtils) {
-  //     socketUtils = SocketUtils();
-  //   }
-  // }
+  static initSocket() {
+    if (null == socketUtils) {
+      socketUtils = SocketUtils();
+    }
+  }
 
   static void initDummyUsers() {
     User userA = new User(id: "1000", name: 'Dulaj', email: 'dulababa@gmail.com');
